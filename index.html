@@ -500,7 +500,7 @@
       </article>
 
       <!-- TASK 15 - LABEL THE DIAGRAM (15 INPUTS) -->
-      <article class="panel task-card" data-task="t15" data-token="4" style="grid-column:span 2">
+      <article class="panel task-card" data-task="t15" data-token="4" style="grid-column:span 3">
         <h2>Task 15 — Label the Engine Diagram (15 components)</h2>
         <p>Label the numbered components in the diagram <b>engine-code-CVIVCBCCVVCWPC.webp</b>. There are <b>15</b> component inputs: <b>top-center (spark plug)</b>, 8 on the left (top→bottom), and 6 on the right (top→bottom). Assemble the code by taking the first letter of each label in the following order: top-center, then left top→bottom (8), then right top→bottom (6). Compare the assembled 15-letter code to the teacher-set code.</p>
         <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;margin-top:8px;align-items:start">
@@ -1075,6 +1075,34 @@
       label.addEventListener('mouseenter', () => label.style.background = 'rgba(106,227,255,.08)');
       label.addEventListener('mouseleave', () => label.style.background = 'rgba(255,255,255,.02)');
     });
+
+    // Auto-correct for Task 15 individual inputs
+    const checkIndividualT15Input = (inputEl, index) => {
+      const inputValue = inputEl.value.trim().toLowerCase();
+      const correctValue = canonicalT15[index].toLowerCase();
+      
+      // Calculate Levenshtein distance
+      const dist = levenshtein(inputValue, correctValue);
+      const threshold = Math.ceil(Math.max(inputValue.length, correctValue.length) * 0.25);
+      
+      // Check if input is close enough to correct answer
+      if (dist <= threshold) {
+        inputEl.value = correctValue[0].toUpperCase() + correctValue.slice(1); // Capitalize first letter
+        inputEl.classList.add('input-ok');
+        // Don't disable individual inputs until final submission
+        playSound(659.25, 0.1); // Success sound
+      } else {
+        inputEl.classList.remove('input-ok');
+      }
+    };
+
+    // Add input event listeners to all Task 15 inputs
+    for (let i = 1; i <= 15; i++) {
+      const inputEl = $(`#t15_${i}`);
+      inputEl.addEventListener('input', () => {
+        setTimeout(() => checkIndividualT15Input(inputEl, i-1), 500); // Check after 500ms of no typing
+      });
+    }
 
     updateProgress();
   </script>
