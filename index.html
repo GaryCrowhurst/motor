@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Engine Escape Challenge • Otto Cycle Mastery</title>
   <style>
     :root{
@@ -49,8 +49,6 @@
     @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
     @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
     
-    .kbd{display:inline-block;padding:.25rem .5rem;border:1px solid rgba(255,255,255,.25);border-bottom-width:2px;border-radius:8px;background:#0e1120;min-width:1.8rem;text-align:center;font-size:14px;box-shadow:0 2px 4px rgba(0,0,0,.2)}
-    
     .btn{
       cursor:pointer;border:none;padding:.75rem 1.25rem;border-radius:12px;
       background:linear-gradient(135deg,#3d53ff,#2231ff);color:white;
@@ -63,8 +61,6 @@
     .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.2);box-shadow:none}
     .btn.ghost:hover:not(:disabled){background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.3)}
     .btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
-    .btn.success{background:linear-gradient(135deg,var(--good),#2ab36f);animation:pulse 2s infinite}
-    .btn.danger{background:linear-gradient(135deg,var(--bad),#cc4554)}
     
     .badge{
       display:inline-flex;gap:.5ch;align-items:center;padding:.4rem .7rem;
@@ -112,14 +108,11 @@
     
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     
-    .drivetrain{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:.8rem}
-    .drive-box{
+    .car-diagram{
       border:2px solid rgba(255,255,255,.25);border-radius:14px;padding:20px;
-      background:#0e1330;display:grid;place-items:center;aspect-ratio:3/2;
-      font-weight:700;font-size:16px;transition:all .2s;position:relative;
+      background:#0e1330;text-align:center;transition:all .2s;
     }
-    .drive-box:hover{transform:scale(1.05)}
-    .drive-box .letter{position:absolute;font-size:48px;opacity:.15;font-weight:900}
+    .car-diagram:hover{transform:scale(1.02)}
     
     dialog{
       border:none;border-radius:18px;
@@ -165,13 +158,91 @@
       padding:.3rem .6rem;border-radius:999px;font-size:12px;font-weight:700;
       color:var(--bad);display:inline-flex;align-items:center;gap:.3rem;
     }
+
+    /* Task 15 specific styles */
+    .t15-container{
+      display:grid;
+      grid-template-columns:minmax(120px,1fr) minmax(300px,2fr) minmax(120px,1fr);
+      gap:20px;
+      margin-top:16px;
+    }
+    .t15-column{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .t15-column label{
+      font-size:14px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .t15-column input{
+      width:100%;
+      font-size:14px;
+      padding:.6rem;
+    }
+    .t15-center{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+    .t15-diagram{
+      border-radius:10px;
+      overflow:hidden;
+      border:2px solid rgba(106,227,255,.2);
+      background:rgba(0,0,0,.3);
+      max-width:500px;
+    }
+    .t15-diagram img{
+      width:100%;
+      display:block;
+    }
     
+    @media(max-width:1024px){
+      .t15-container{
+        grid-template-columns:1fr;
+        gap:16px;
+      }
+      .t15-center{
+        order:-1;
+      }
+    }
+
     @media(max-width:768px){
       .wrap{padding:16px}
       h1{font-size:22px}
+      h2{font-size:18px}
       .cols{grid-template-columns:1fr}
-      .drivetrain{grid-template-columns:1fr}
       .lockout-timer{font-size:56px}
+      .panel{padding:16px}
+      .task-card{padding-bottom:40px}
+      .btn{padding:.65rem 1rem;font-size:14px}
+      input,select{font-size:14px;padding:.6rem .7rem}
+      .car-diagram{padding:12px}
+      .header-badge{padding:.4rem .8rem;font-size:12px}
+      .badge{font-size:12px;padding:.3rem .6rem}
+      dialog{padding:24px;max-width:90vw}
+      .t15-column label{font-size:13px}
+      .t15-column input{font-size:13px}
+      .task-card[style*="grid-column:span"]{
+        grid-column:1 !important;
+      }
+    }
+
+    @media(max-width:480px){
+      .wrap{padding:12px}
+      h1{font-size:20px}
+      h2{font-size:16px}
+      .panel{padding:12px}
+      .btn{padding:.55rem .85rem;font-size:13px}
+      input,select{font-size:13px;padding:.5rem .6rem}
+      input[type="number"]{width:120px}
+      .row{gap:8px}
+      .grid{gap:12px}
+      .token{font-size:11px;padding:.3rem .5rem}
+      .lockout-timer{font-size:48px}
+      .lockout-box{padding:24px}
     }
   </style>
 </head>
@@ -191,7 +262,7 @@
       <p class="hint" style="max-width:900px">Solve all tasks to collect <b>6 OTP digits</b>. Solve the final riddle to unlock the code. <span class="warn">Warning: Wrong answers add 10-second time penalties!</span></p>
       <div class="progress"><i id="bar"></i></div>
       <div class="row" style="gap:12px;flex-wrap:wrap">
-        <span class="badge header-badge">Tasks: <b class="mono" id="solved">0/13</b></span>
+        <span class="badge header-badge">Tasks: <b class="mono" id="solved">0/15</b></span>
         <span class="badge header-badge">OTP Collected: <b class="mono" id="otp" style="letter-spacing:2px">______</b></span>
         <span class="badge header-badge" id="timerBadge">⏱️ <b class="mono" id="clock">00:00</b></span>
         <span class="penalty-badge" id="penaltyBadge" style="display:none">⚠️ Penalties: <b id="penalties">0</b></span>
@@ -203,13 +274,13 @@
 
       <!-- TASK 1 -->
       <article class="panel task-card" data-task="t1" data-token="3">
-        <h2>Task 1 — Cycle Order</h2>
-        <p>Arrange the Otto 4-stroke cycle in the correct order using the emoji selectors.</p>
+        <h2>Task 1 — Engine's Dance</h2>
+        <p>The engine performs a four-step dance. Each emoji tells a story - decode the correct sequence!</p>
         <div class="grid" style="gap:8px">
-          <label><b>1.</b> <select id="t1a"><option value="">— choose —</option><option value="Induction">💨</option><option value="Compression">🔩</option><option value="Combustion">💥</option><option value="Exhaust">🌫️</option></select></label>
-          <label><b>2.</b> <select id="t1b"><option value="">— choose —</option><option value="Induction">💨</option><option value="Compression">🔩</option><option value="Combustion">💥</option><option value="Exhaust">🌫️</option></select></label>
-          <label><b>3.</b> <select id="t1c"><option value="">— choose —</option><option value="Induction">💨</option><option value="Compression">🔩</option><option value="Combustion">💥</option><option value="Exhaust">🌫️</option></select></label>
-          <label><b>4.</b> <select id="t1d"><option value="">— choose —</option><option value="Induction">💨</option><option value="Compression">🔩</option><option value="Combustion">💥</option><option value="Exhaust">🌫️</option></select></label>
+          <label><b>1.</b> <select id="t1a"><option value="">— choose —</option><option value="Combustion">💥</option><option value="Exhaust">🌫️</option><option value="Induction">💨</option><option value="Compression">🔩</option></select></label>
+          <label><b>2.</b> <select id="t1b"><option value="">— choose —</option><option value="Exhaust">🌫️</option><option value="Compression">🔩</option><option value="Combustion">💥</option><option value="Induction">💨</option></select></label>
+          <label><b>3.</b> <select id="t1c"><option value="">— choose —</option><option value="Compression">🔩</option><option value="Induction">💨</option><option value="Exhaust">🌫️</option><option value="Combustion">💥</option></select></label>
+          <label><b>4.</b> <select id="t1d"><option value="">— choose —</option><option value="Induction">💨</option><option value="Combustion">💥</option><option value="Compression">🔩</option><option value="Exhaust">🌫️</option></select></label>
         </div>
         <div class="row" style="margin-top:12px">
           <button class="btn" data-check="t1">Submit</button>
@@ -336,40 +407,44 @@
         <div class="token">🎫 <b>2</b></div>
       </article>
 
-      <!-- TASK 8 IMPROVED -->
-      <article class="panel task-card" data-task="t8" data-token="5">
-        <h2>Task 8 — Drivetrain Color Cipher</h2>
-        <p>Each drivetrain layout is highlighted with a color. Decode the sequence to spell a word.</p>
-        <div class="drivetrain">
-          <div class="drive-box" style="border-color:#ff3b3b;border-width:4px">
-            <div class="letter">F</div>
-            <div>Front-Wheel<br/>Drive</div>
+      <!-- TASK 8 - DRIVETRAIN MYSTERY -->
+      <article class="panel task-card" data-task="t8" data-token="5" style="grid-column:span 2">
+        <h2>Task 8 — Power Flow Patterns</h2>
+        <p>Three vehicles, three distinct power flow patterns. Study the glowing wheels in each diagram. What's the secret code?</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:20px;margin:16px 0">
+          <div class="car-diagram">
+            <svg viewBox="0 0 100 160" style="width:100px;margin:auto">
+              <rect x="20" y="40" width="60" height="100" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="30" cy="60" r="10" fill="#6ae3ff" stroke="currentColor"/>
+              <circle cx="70" cy="60" r="10" fill="#6ae3ff" stroke="currentColor"/>
+              <circle cx="30" cy="120" r="10" fill="none" stroke="currentColor"/>
+              <circle cx="70" cy="120" r="10" fill="none" stroke="currentColor"/>
+              <text x="50" y="150" text-anchor="middle" fill="currentColor" font-size="14">1</text>
+            </svg>
           </div>
-          <div class="drive-box" style="border-color:#ffd44d;border-width:4px">
-            <div class="letter">D</div>
-            <div>4-Wheel<br/>Drive</div>
+          <div class="car-diagram">
+            <svg viewBox="0 0 100 160" style="width:100px;margin:auto">
+              <rect x="20" y="40" width="60" height="100" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="30" cy="60" r="10" fill="#6ae3ff" stroke="currentColor"/>
+              <circle cx="70" cy="60" r="10" fill="#6ae3ff" stroke="currentColor"/>
+              <circle cx="30" cy="120" r="10" fill="#6ae3ff" stroke="currentColor"/>
+              <circle cx="70" cy="120" r="10" fill="#6ae3ff" stroke="currentColor"/>
+              <text x="50" y="150" text-anchor="middle" fill="currentColor" font-size="14">2</text>
+            </svg>
           </div>
-          <div class="drive-box" style="border-color:#30ff6d;border-width:4px">
-            <div class="letter">R</div>
-            <div>Rear-Wheel<br/>Drive</div>
-          </div>
-          <div class="drive-box" style="border-color:#ff3b3b;border-width:4px">
-            <div class="letter">F</div>
-            <div>Front-Wheel<br/>Drive</div>
+          <div class="car-diagram">
+            <svg viewBox="0 0 100 160" style="width:100px;margin:auto">
+              <rect x="20" y="40" width="60" height="100" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="30" cy="60" r="10" fill="none" stroke="currentColor"/>
+              <circle cx="70" cy="60" r="10" fill="none" stroke="currentColor"/>
+              <circle cx="30" cy="120" r="10" fill="#6ae3ff" stroke="currentColor"/>
+              <circle cx="70" cy="120" r="10" fill="#6ae3ff" stroke="currentColor"/>
+              <text x="50" y="150" text-anchor="middle" fill="currentColor" font-size="14">3</text>
+            </svg>
           </div>
         </div>
-        <div style="margin-top:12px;padding:12px;background:rgba(255,255,255,.02);border-radius:10px">
-          <div class="tiny"><b>Color Key:</b></div>
-          <div class="row" style="margin-top:8px;font-size:13px">
-            <span style="padding:.3rem .6rem;border-radius:8px;background:#ff3b3b;color:#000;font-weight:700">Red = I</span>
-            <span style="padding:.3rem .6rem;border-radius:8px;background:#30ff6d;color:#000;font-weight:700">Green = E</span>
-            <span style="padding:.3rem .6rem;border-radius:8px;background:#3bb2ff;color:#000;font-weight:700">Blue = A</span>
-            <span style="padding:.3rem .6rem;border-radius:8px;background:#ffd44d;color:#000;font-weight:700">Yellow = R</span>
-          </div>
-        </div>
-        <p class="tiny" style="margin-top:12px">💡 Read the colors left-to-right, top-to-bottom, then decode using the key.</p>
-        <div class="row" style="margin-top:12px">
-          <input id="t8" class="mono" placeholder="4 letters" maxlength="4" style="width:160px;font-size:18px;text-align:center;text-transform:uppercase"/>
+        <div class="row">
+          <input id="t8" class="mono" placeholder="3 letters" maxlength="3" style="width:160px;font-size:18px;text-align:center;text-transform:uppercase"/>
           <button class="btn" data-check="t8">Submit</button>
           <button class="btn ghost" data-hint="t8">💡 Hint</button>
         </div>
@@ -399,7 +474,7 @@
         <div class="token">🎫 <b>6</b></div>
       </article>
 
-      <!-- TASK 10 - NEW TRIVIA -->
+      <!-- TASK 10 -->
       <article class="panel task-card" data-task="t10" data-token="0">
         <h2>Task 10 — Compression Ratio</h2>
         <p>If cylinder volume at BDC is 500cc and TDC is 50cc, what is the compression ratio? (format: X:1)</p>
@@ -412,7 +487,7 @@
         <div class="token">🎫 <b>0</b></div>
       </article>
 
-      <!-- TASK 11 - NEW TRIVIA -->
+      <!-- TASK 11 -->
       <article class="panel task-card" data-task="t11" data-token="8">
         <h2>Task 11 — Thermal Efficiency</h2>
         <p>Which cycle stroke converts chemical energy to mechanical work?</p>
@@ -438,7 +513,7 @@
         <div class="token">🎫 <b>8</b></div>
       </article>
 
-      <!-- TASK 12 - NEW TRIVIA -->
+      <!-- TASK 12 -->
       <article class="panel task-card" data-task="t12" data-token="3">
         <h2>Task 12 — Valve Timing</h2>
         <p>At what crankshaft angle does intake valve typically open? (BTDC/ATDC)</p>
@@ -457,7 +532,7 @@
         <div class="token">🎫 <b>3</b></div>
       </article>
 
-      <!-- TASK 13 - CYCLE RIDDLE -->
+      <!-- TASK 13 -->
       <article class="panel task-card" data-task="t13" data-token="5">
         <h2>Task 13 — The Cycle Riddle</h2>
         <div style="padding:16px;background:rgba(106,227,255,.05);border-left:4px solid var(--accent);border-radius:8px;margin:12px 0">
@@ -478,14 +553,14 @@
         <div class="token">🎫 <b>5</b></div>
       </article>
 
-      <!-- TASK 14 - FIRING ORDER (GIF) -->
+      <!-- TASK 14 -->
       <article class="panel task-card" data-task="t14" data-token="7">
         <h2>Task 14 — Identify the Firing Order</h2>
         <p>Watch the animation and select the firing order shown.</p>
         <div style="margin-top:8px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.06)">
           <img src="1243firingordergifKaw.gif" alt="Firing order animation" style="width:100%;display:block"/>
         </div>
-        <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px">
           <label style="padding:10px;background:rgba(255,255,255,.02);border-radius:8px"><input type="radio" name="t14" value="1-3-4-2"/> 1-3-4-2</label>
           <label style="padding:10px;background:rgba(255,255,255,.02);border-radius:8px"><input type="radio" name="t14" value="1-2-3-4"/> 1-2-3-4</label>
           <label style="padding:10px;background:rgba(255,255,255,.02);border-radius:8px"><input type="radio" name="t14" value="1-4-2-3"/> 1-4-2-3</label>
@@ -499,50 +574,62 @@
         <div class="token">🎫 <b>7</b></div>
       </article>
 
-      <!-- TASK 15 - LABEL THE DIAGRAM (15 INPUTS) -->
-      <article class="panel task-card" data-task="t15" data-token="4" style="grid-column:span 3">
-        <h2>Task 15 — Label the Engine Diagram (15 components)</h2>
-        <p>Label the numbered components in the diagram <b>engine-code-CVIVCBCCVVCWPC.webp</b>. There are <b>15</b> component inputs: <b>top-center (spark plug)</b>, 8 on the left (top→bottom), and 6 on the right (top→bottom). Assemble the code by taking the first letter of each label in the following order: top-center, then left top→bottom (8), then right top→bottom (6). Compare the assembled 15-letter code to the teacher-set code.</p>
-        <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;margin-top:8px;align-items:start">
-          <div>
-            <div style="border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.06)">
-              <img src="engine-code-CVIVCBCCVVCWPC.webp" alt="Engine components diagram" style="width:100%;display:block"/>
-            </div>
-            <div class="tiny" style="margin-top:8px">Top-center is <b>Spark Plug</b>. Use the numbering on the image. Assemble letters in the exact order described above.</div>
+      <!-- TASK 15 - LABEL THE DIAGRAM -->
+      <article class="panel task-card" data-task="t15" data-token="4" style="grid-column:span 2">
+        <h2>Task 15 — Decode the Engine's Secret</h2>
+        <p>Label all 15 numbered components in the engine diagram. The engine holds a secret message—take the <b>first letter</b> of each component name in a special sequence to reveal it.</p>
+        
+        <div class="t15-container">
+          <div class="t15-column">
+            <div style="font-weight:700;margin-bottom:12px;color:var(--accent)">Left Column</div>
+            <label>2: <input id="t15_2"/></label>
+            <label>3: <input id="t15_3"/></label>
+            <label>4: <input id="t15_4"/></label>
+            <label>5: <input id="t15_5"/></label>
+            <label>6: <input id="t15_6"/></label>
+            <label>7: <input id="t15_7"/></label>
+            <label>8: <input id="t15_8"/></label>
+            <label>9: <input id="t15_9"/></label>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;align-items:start">
-            <div>
-              <div style="font-weight:700;margin-bottom:6px">Top Center</div>
-              <label>Top center (1): <input id="t15_1"/></label>
+          
+          <div class="t15-center">
+            <div style="margin-bottom:12px;text-align:center">
+              <div style="font-weight:700;margin-bottom:6px;color:var(--accent)">Top Center</div>
+              <label style="display:flex;flex-direction:column;gap:4px;align-items:center">
+                1: <input id="t15_1" style="width:180px;font-size:14px"/>
+              </label>
             </div>
-            <div>
-              <div style="font-weight:700;margin-bottom:6px">Left Side (Top→Bottom)</div>
-              <label>Left 1 (2): <input id="t15_2"/></label>
-              <label>Left 2 (3): <input id="t15_3"/></label>
-              <label>Left 3 (4): <input id="t15_4"/></label>
-              <label>Left 4 (5): <input id="t15_5"/></label>
-              <label>Left 5 (6): <input id="t15_6"/></label>
-              <label>Left 6 (7): <input id="t15_7"/></label>
-              <label>Left 7 (8): <input id="t15_8"/></label>
-              <label>Left 8 (9): <input id="t15_9"/></label>
+            <div class="t15-diagram">
+              <img src="engine-diagram-labeled.webp" alt="Engine cross-section" />
             </div>
-            <div>
-              <div style="font-weight:700;margin-bottom:6px">Right Side (Top→Bottom)</div>
-              <label>Right 1 (10): <input id="t15_10"/></label>
-              <label>Right 2 (11): <input id="t15_11"/></label>
-              <label>Right 3 (12): <input id="t15_12"/></label>
-              <label>Right 4 (13): <input id="t15_13"/></label>
-              <label>Right 5 (14): <input id="t15_14"/></label>
-              <label>Right 6 (15): <input id="t15_15"/></label>
+            <div class="tiny" style="margin-top:12px;text-align:center;padding:8px;background:rgba(255,255,255,.02);border-radius:8px">
+              Match each number to its component name
             </div>
+          </div>
+
+          <div class="t15-column">
+            <div style="font-weight:700;margin-bottom:12px;color:var(--accent)">Right Column</div>
+            <label>10: <input id="t15_10"/></label>
+            <label>11: <input id="t15_11"/></label>
+            <label>12: <input id="t15_12"/></label>
+            <label>13: <input id="t15_13"/></label>
+            <label>14: <input id="t15_14"/></label>
+            <label>15: <input id="t15_15"/></label>
           </div>
         </div>
-        <div class="row" style="margin-top:12px">
-          <button class="btn" data-check="t15">Submit</button>
+
+        <div style="margin-top:20px;padding:16px;background:rgba(106,227,255,.05);border-left:4px solid var(--accent);border-radius:8px">
+          <p style="font-weight:600;margin:0 0 8px 0">🔐 Secret Sequence Decoder:</p>
+          <p class="tiny" style="margin:0">Once all components are labeled, enter the decoded message from the first letters following this path: <b>7→1→13→4→9→2→15→8→3→11→5→14→6→10→12</b></p>
+        </div>
+
+        <div class="row" style="margin-top:16px;align-items:center;gap:12px">
+          <input id="t15code" class="mono" placeholder="15-letter code" maxlength="15" style="flex:1;font-size:18px;text-align:center;text-transform:uppercase;letter-spacing:2px"/>
+          <button class="btn" data-check="t15">Decode Message</button>
           <button class="btn ghost" data-hint="t15">💡 Hint</button>
         </div>
         <div class="hint" id="t15msg" style="margin-top:8px"></div>
-        <div class="token">🎫 <b>9</b></div>
+        <div class="token">🎫 <b>4</b></div>
       </article>
 
     </section>
@@ -597,8 +684,9 @@
           <button class="btn secondary" id="reset" style="width:fit-content">🔄 Reset Game</button>
         </div>
         <p class="tiny" style="margin-top:12px;padding:12px;background:rgba(255,255,255,.02);border-radius:8px">
-          <b>Note:</b> OTP digits collected: 3,7,9,1,8,4,2,5,6,0,8,3,5. First 6 unique in ascending order: <b>012345</b><br/>
-          <b>Riddle:</b> (1876-1800) × 4 ÷ (500/50) = 76 × 4 ÷ 10 = <b>30.4 → 30</b>
+          <b>Note:</b> OTP digits collected from tokens: 3,7,9,1,8,4,2,5,6,0,8,3,5,7,4. First 6 unique in ascending order: <b>012345</b><br/>
+          <b>Riddle:</b> (1876-1800) × 4 ÷ (500/50) = 76 × 4 ÷ 10 = <b>30.4 → 30</b><br/>
+          <b>Task 15:</b> Sequence 7→1→13→4→9→2→15→8→3→11→5→14→6→10→12 should spell the 15-letter code when using first letters of correct component names
         </p>
       </div>
     </details>
@@ -648,9 +736,6 @@
     </div>
   </dialog>
 
-  <!-- LOCKOUT OVERLAY -->
-  <div id="lockoutOverlay" style="display:none"></div>
-
   <script>
     // ===== CONFIG =====
     const TEACHER_PASSWORD = "otto1876";
@@ -664,7 +749,7 @@
     let soundEnabled = true;
     let wrongAnswers = 0;
     let lockoutAttempts = 0;
-    let timeOffset = 0; // Penalty time in seconds
+    let timeOffset = 0;
     const solved = new Set();
     const otpDigits = new Map();
 
@@ -730,7 +815,7 @@
 
     // Show lockout
     const showLockout = (attempts) => {
-      const seconds = attempts * 15; // 15 seconds per attempt
+      const seconds = attempts * 15;
       const overlay = document.createElement('div');
       overlay.className = 'lockout-overlay';
       overlay.innerHTML = `
@@ -807,8 +892,7 @@
       }
     };
 
-    // ===== CHECKERS =====
-    // Helper: Levenshtein distance for fuzzy matching
+    // Levenshtein distance for fuzzy matching
     const levenshtein = (a, b) => {
       if (a === b) return 0;
       const al = a.length, bl = b.length;
@@ -830,15 +914,13 @@
       return matrix[al][bl];
     };
 
-    // Canonical labels provided by teacher for fuzzy check (lowercase)
+    // Canonical labels for Task 15
     const canonicalT15 = [
-      'spark plug', 'camshaft','lobe','inlet port','inlet valve','cylinder','block','connecting rod','crankshaft',
-      'exhaust spring','exhaust valve','head','water jacket','piston','crankcase'
+      'camshaft', 'valve', 'intake', 'valve', 'cylinder', 'block', 'connecting', 'crankshaft', 'valve', 'valve', 'combustion', 'water', 'piston', 'crankcase'
     ];
 
     const checkers = {
       t1() {
-        // selects now show emojis but values remain the full stage names
         const a = $('#t1a').value, b = $('#t1b').value, c = $('#t1c').value, d = $('#t1d').value;
         const ok = a === 'Induction' && b === 'Compression' && c === 'Combustion' && d === 'Exhaust';
         ok ? award('t1', $('#t1msg')) : wrong($('#t1msg'), '❌ Review the cycle order');
@@ -863,7 +945,7 @@
       },
       t6() {
         const v = $('#t6code').value.trim();
-        const ok = v === '10'; // 1+3+4+2 = 10
+        const ok = v === '10';
         ok ? award('t6', $('#t6msg')) : wrong($('#t6msg'), '❌ Add all four cylinder numbers', $('#t6code'));
       },
       t7() {
@@ -871,15 +953,16 @@
         ok ? award('t7', $('#t7msg')) : wrong($('#t7msg'), '❌ Take first letter of each word', $('#t7'));
       },
       t8() {
-        // The color key decodes the four highlighted drivetrains to: Red -> I, Yellow -> R, Green -> E, Red -> I
-        // Reading the four boxes left-to-right yields I R E I ("IREI"). Accept that literal decoded string.
         const val = $('#t8').value.trim().toUpperCase();
-        if (!val) return wrong($('#t8msg'), '❌ Enter the decoded 4-letter sequence', $('#t8'));
-        const expected = 'IREI';
+        if (!val) return wrong($('#t8msg'), '❌ Enter three letters (F/A/R) for the drivetrain layouts', $('#t8'));
+        if (val.length !== 3) return wrong($('#t8msg'), '❌ Enter exactly three letters', $('#t8'));
+        if (!/^[FAR]{3}$/.test(val)) return wrong($('#t8msg'), '❌ Use only F, A, or R for each position', $('#t8'));
+        
+        const expected = 'FAR';
         if (val === expected) {
           award('t8', $('#t8msg'));
         } else {
-          wrong($('#t8msg'), '❌ That decoding does not match the color key (try I R E I)', $('#t8'));
+          wrong($('#t8msg'), '❌ Check which wheels are powered in each diagram', $('#t8'));
         }
       },
       t9() {
@@ -906,82 +989,87 @@
         const ok = v === 'induction-compression-combustion-exhaust' || v === 'suck-squeeze-bang-blow';
         ok ? award('t13', $('#t13msg')) : wrong($('#t13msg'), '❌ Follow the riddle\'s sequence', $('#t13'));
       },
-
-      // Task 14: multiple-choice firing order from GIF
       t14() {
         const sel = document.querySelector('input[name="t14"]:checked');
         const ok = sel && sel.value === '1-3-4-2';
         ok ? award('t14', $('#t14msg')) : wrong($('#t14msg'), '❌ That firing order is not shown', null);
       },
-
-      // Task 15: labeling the static diagram and assembling first letters anti-clockwise (1->2->4->3)
       t15() {
-        // read 15 inputs in order: top-center (1), left 1..8 (2..9), right 1..6 (10..15)
-        const ids = [
-          't15_1','t15_2','t15_3','t15_4','t15_5','t15_6','t15_7','t15_8','t15_9',
-          't15_10','t15_11','t15_12','t15_13','t15_14','t15_15'
-        ];
+        const sequence = [7,1,13,4,9,2,15,8,3,11,5,14,6,10,12];
+        const ids = Array.from({length: 15}, (_, i) => `t15_${i+1}`);
         const vals = ids.map(id => ($('#' + id).value || '').trim());
-        if (vals.some(v => !v)) return wrong($('#t15msg'), '❌ Please fill all 15 component labels', $('#' + ids[0]));
-
-        // assemble letters
-        const letters = vals.map(v => v[0].toUpperCase()).join('');
-        const expected = ($('#setT15').value || '').trim().toUpperCase();
-
-        // 1) If assembled matches teacher code exactly, award immediately
-        if (expected && letters === expected) {
-          $('#t15msg').innerHTML = `<span class="ok">✓ Correct! Assembled code: <b>${letters}</b></span>`;
-          // mark inputs green and disable
-          ids.forEach(id => { const el = $('#' + id); el.classList.add('input-ok'); el.disabled = true; });
-          return award('t15', $('#t15msg'));
+        const enteredCode = ($('#t15code').value || '').trim().toUpperCase();
+        const teacherCode = $('#setT15').value.trim().toUpperCase();
+        
+        if (!enteredCode) {
+          return wrong($('#t15msg'), '❌ Enter the decoded message from the first letters', $('#t15code'));
+        }
+        
+        if (enteredCode.length !== 15) {
+          return wrong($('#t15msg'), '❌ The code must be exactly 15 letters', $('#t15code'));
+        }
+        
+        if (vals.some(v => !v)) {
+          return wrong($('#t15msg'), '❌ Please label all 15 components first', $('#' + ids.find(id => !$('#' + id).value)));
         }
 
-        // 2) Otherwise do a fuzzy check of each label vs canonical list
+        const letters = sequence.map(i => vals[i-1][0].toUpperCase()).join('');
+        
+        if (enteredCode !== letters) {
+          return wrong($('#t15msg'), `❌ Your code doesn't match the sequence. Following 7→1→13→... gives: <b>${letters}</b>`, $('#t15code'));
+        }
+        
         const lowerVals = vals.map(v => v.toLowerCase());
         let allClose = true;
         for (let i = 0; i < canonicalT15.length; i++) {
           const a = lowerVals[i] || '';
           const b = canonicalT15[i] || '';
           const dist = levenshtein(a, b);
-          // allow small typos: threshold = Math.ceil(length * 0.25)
           const threshold = Math.ceil(Math.max(a.length, b.length) * 0.25);
           if (dist > threshold) { allClose = false; break; }
         }
 
-        if (allClose) {
-          $('#t15msg').innerHTML = `<span class="ok">✓ Labels match closely. Assembled code: <b>${letters}</b></span>`;
-          ids.forEach(id => { const el = $('#' + id); el.classList.add('input-ok'); el.disabled = true; });
-          return award('t15', $('#t15msg'));
+        if (allClose && enteredCode === teacherCode) {
+          $('#t15msg').innerHTML = `<span class="ok">✓ Perfect! Components labeled correctly and message decoded: <b>${letters}</b></span>`;
+          ids.forEach(id => { 
+            const el = $('#' + id); 
+            el.classList.add('input-ok'); 
+            el.disabled = true; 
+          });
+          $('#t15code').classList.add('input-ok');
+          $('#t15code').disabled = true;
+          return award('t15', null);
+        } else if (!allClose) {
+          return wrong($('#t15msg'), `❌ Some component labels need correction. Your sequence spells: <b>${letters}</b>`, $('#t15code'));
         } else {
-          $('#t15msg').innerHTML = `<span class="warn">Assembled code: <b>${letters}</b></span>`;
-          return wrong($('#t15msg'), '❌ Labels do not match expected diagram labels closely. Re-check spelling and order.');
+          return wrong($('#t15msg'), `❌ Message decoded as <b>${letters}</b> but doesn't match the engine's secret`, $('#t15code'));
         }
       }
     };
-
+    
     // Wire buttons
     $$('[data-check]').forEach(btn => btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-check');
       checkers[id] && checkers[id]();
     }));
 
-    // Hints (more cryptic)
+    // Hints
     const hints = {
-  t1: '💡 Emoji key — 💨 = Induction, 🔩 = Compression, 💥 = Combustion, 🌫️ = Exhaust.',
-      t2: '💡 Linear motion → rotary. Valves control flow. Spark = ignition.',
-      t3: '💡 All end with -ION or -TION. Start with the cycle order.',
-      t4: '💡 American Independence + 100 years',
-      t5: '💡 Misfires = failed ignition events',
-      t6: '💡 Simple addition of four single digits',
-      t7: '💡 First letter only: S__, S__, B__, B__',
-      t8: '💡 Match border colors to key letters, spell the result',
-      t9: '💡 Vacuum issues = air intake. Oil burning = seal failure. Backfire = timing.',
-      t10: '💡 Compression ratio = max volume ÷ min volume',
-      t11: '💡 Chemical → mechanical energy happens during power stroke',
-      t12: '💡 Intake valve opens just before piston reaches top',
-      t13: '💡 The riddle describes all four strokes in sequence',
-      t14: '💡 Watch the animation carefully — note the order each cylinder fires',
-      t15: '💡 Fill all 15 labels. Assemble first letters in this order: top-center, left column top→bottom (8), then right column top→bottom (6). Compare to teacher code.'
+      t1: '💡 First comes the breath of life, then muscles flex, followed by explosive power, ending with a cleansing sigh...',
+      t2: '💡 What moves up and down becomes round and round, gates guide the flow, while sparks ignite the show...',
+      t3: '💡 The words you seek share a common end, in the cycle\'s order your path will bend...',
+      t4: '💡 A century after freedom\'s bell, this year holds secrets to tell...',
+      t5: '💡 When sparks fail to dance, this ghost appears by chance...',
+      t6: '💡 Four numbers in line, their sum divine...',
+      t7: '💡 Two sucks, two bangs, in letters they dance...',
+      t8: '💡 Some cars pull from the front, others push from behind, the ambitious ones use all their feet...',
+      t9: '💡 Air whispers of hunger, oil leaves its trace, timing\'s dance sets the pace...',
+      t10: '💡 When space is squeezed from max to min, this ratio holds the secret within...',
+      t11: '💡 From heat to motion, in this stroke lies the potion...',
+      t12: '💡 Just before the crown is reached, this gate begins to teach...',
+      t13: '💡 In verses four, the engine\'s lore...',
+      t14: '💡 Like dancers in time, cylinders chime...',
+      t15: '💡 Name the parts from heart to shell, follow the path where numbers tell, each letter\'s start reveals the spell...'
     };
 
     $$('[data-hint]').forEach(btn => btn.addEventListener('click', () => {
@@ -1075,34 +1163,6 @@
       label.addEventListener('mouseenter', () => label.style.background = 'rgba(106,227,255,.08)');
       label.addEventListener('mouseleave', () => label.style.background = 'rgba(255,255,255,.02)');
     });
-
-    // Auto-correct for Task 15 individual inputs
-    const checkIndividualT15Input = (inputEl, index) => {
-      const inputValue = inputEl.value.trim().toLowerCase();
-      const correctValue = canonicalT15[index].toLowerCase();
-      
-      // Calculate Levenshtein distance
-      const dist = levenshtein(inputValue, correctValue);
-      const threshold = Math.ceil(Math.max(inputValue.length, correctValue.length) * 0.25);
-      
-      // Check if input is close enough to correct answer
-      if (dist <= threshold) {
-        inputEl.value = correctValue[0].toUpperCase() + correctValue.slice(1); // Capitalize first letter
-        inputEl.classList.add('input-ok');
-        // Don't disable individual inputs until final submission
-        playSound(659.25, 0.1); // Success sound
-      } else {
-        inputEl.classList.remove('input-ok');
-      }
-    };
-
-    // Add input event listeners to all Task 15 inputs
-    for (let i = 1; i <= 15; i++) {
-      const inputEl = $(`#t15_${i}`);
-      inputEl.addEventListener('input', () => {
-        setTimeout(() => checkIndividualT15Input(inputEl, i-1), 500); // Check after 500ms of no typing
-      });
-    }
 
     updateProgress();
   </script>
