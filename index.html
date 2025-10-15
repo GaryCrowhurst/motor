@@ -503,17 +503,20 @@
       <article class="panel task-card" data-task="t15" data-token="4" style="grid-column:span 2">
         <h2>Task 15 — Label the Engine Diagram (15 components)</h2>
         <p>Label the numbered components in the diagram <b>engine-code-CVIVCBCCVVCWPC.webp</b>. There are <b>15</b> component inputs: <b>top-center (spark plug)</b>, 8 on the left (top→bottom), and 6 on the right (top→bottom). Assemble the code by taking the first letter of each label in the following order: top-center, then left top→bottom (8), then right top→bottom (6). Compare the assembled 15-letter code to the teacher-set code.</p>
-        <div style="display:grid;gap:12px;margin-top:8px;align-items:center">
-          <div style="border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.06)">
-            <img src="engine-code-CVIVCBCCVVCWPC.webp" alt="Engine components diagram" style="width:100%;display:block"/>
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;margin-top:8px;align-items:start">
+          <div>
+            <div style="border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.06)">
+              <img src="engine-code-CVIVCBCCVVCWPC.webp" alt="Engine components diagram" style="width:100%;display:block"/>
+            </div>
+            <div class="tiny" style="margin-top:8px">Top-center is <b>Spark Plug</b>. Use the numbering on the image. Assemble letters in the exact order described above.</div>
           </div>
-          <div class="tiny">Top-center is <b>Spark Plug</b>. Use the numbering on the image. Assemble letters in the exact order described above.</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;align-items:start">
-            <div style="grid-column:span 1">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;align-items:start">
+            <div>
+              <div style="font-weight:700;margin-bottom:6px">Top Center</div>
               <label>Top center (1): <input id="t15_1"/></label>
             </div>
-            <div style="grid-column:span 1">
-              <div style="font-weight:700;margin-bottom:6px">Left column (8 inputs top→bottom)</div>
+            <div>
+              <div style="font-weight:700;margin-bottom:6px">Left Side (Top→Bottom)</div>
               <label>Left 1 (2): <input id="t15_2"/></label>
               <label>Left 2 (3): <input id="t15_3"/></label>
               <label>Left 3 (4): <input id="t15_4"/></label>
@@ -523,8 +526,8 @@
               <label>Left 7 (8): <input id="t15_8"/></label>
               <label>Left 8 (9): <input id="t15_9"/></label>
             </div>
-            <div style="grid-column:span 1">
-              <div style="font-weight:700;margin-bottom:6px">Right column (6 inputs top→bottom)</div>
+            <div>
+              <div style="font-weight:700;margin-bottom:6px">Right Side (Top→Bottom)</div>
               <label>Right 1 (10): <input id="t15_10"/></label>
               <label>Right 2 (11): <input id="t15_11"/></label>
               <label>Right 3 (12): <input id="t15_12"/></label>
