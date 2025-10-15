@@ -281,10 +281,10 @@
     <header class="panel grid" style="gap:12px">
       <div class="row" style="justify-content:space-between;flex-wrap:wrap">
         <div>
-          <h1>�❄️ Engine Escape</h1>
+          <h1>Engine Escape</h1>
           <div class="badge" style="margin-top:8px">
             <span style="font-size:16px">🛠️</span>
-            <span>Cycles, Heat Transfer, and Diagnostics</span>
+            <span>Four‑Stroke Cycle & Diagnostics</span>
           </div>
         </div>
         <button class="btn ghost" id="openGuide">📖 Reference Guide</button>
@@ -519,20 +519,20 @@
 
       <!-- TASK 11 -->
       <article class="panel task-card" data-task="t11" data-token="8">
-        <h2>Task 11 — Heat Transfer Basics</h2>
-        <p>In a vehicle radiator, which <b>mode of heat transfer</b> accounts for most heat loss from fins to the surrounding air?</p>
+        <h2>Task 11 — Stoichiometric Mix</h2>
+        <p>For gasoline engines, what is the <b>stoichiometric air‑fuel ratio</b> by mass?</p>
         <div class="grid" style="gap:8px">
           <label style="padding:10px;background:rgba(255,255,255,.02);border-radius:8px;cursor:pointer" class="radio-label">
-            <input type="radio" name="t11" value="Conduction"/> Conduction
+            <input type="radio" name="t11" value="12:1"/> 12:1
           </label>
           <label style="padding:10px;background:rgba(255,255,255,.02);border-radius:8px;cursor:pointer" class="radio-label">
-            <input type="radio" name="t11" value="Convection"/> Convection
+            <input type="radio" name="t11" value="14.7:1"/> 14.7:1
           </label>
           <label style="padding:10px;background:rgba(255,255,255,.02);border-radius:8px;cursor:pointer" class="radio-label">
-            <input type="radio" name="t11" value="Radiation"/> Radiation
+            <input type="radio" name="t11" value="16:1"/> 16:1
           </label>
           <label style="padding:10px;background:rgba(255,255,255,.02);border-radius:8px;cursor:pointer" class="radio-label">
-            <input type="radio" name="t11" value="Evaporation"/> Evaporation
+            <input type="radio" name="t11" value="9:1"/> 9:1
           </label>
         </div>
         <div class="row" style="margin-top:12px">
@@ -545,10 +545,10 @@
 
       <!-- TASK 12 -->
       <article class="panel task-card" data-task="t12" data-token="3">
-        <h2>Task 12 — Thermostat Range</h2>
-        <p>Enter a <b>typical thermostat opening temperature range</b> in °C (e.g., <span class="mono">80-90</span> or <span class="mono">82-88</span>).</p>
+        <h2>Task 12 — Spark Plug Gap</h2>
+        <p>Enter a <b>typical spark plug gap range</b> in mm (e.g., <span class="mono">0.7-0.9</span> or <span class="mono">0.8-0.9</span>).</p>
         <div class="row">
-          <input id="t12" class="mono" placeholder="e.g. 80-90" style="width:180px;text-align:center"/>
+          <input id="t12" class="mono" placeholder="e.g. 0.7-0.9" style="width:180px;text-align:center"/>
           <button class="btn" data-check="t12">Submit</button>
           <button class="btn ghost" data-hint="t12">💡 Hint</button>
         </div>
@@ -721,7 +721,7 @@
   <dialog id="guide">
     <div class="grid" style="gap:20px">
       <div style="text-align:center">
-        <h2 style="font-size:28px;margin-bottom:12px">📖 Heat & Cycle Reference</h2>
+  <h2 style="font-size:28px;margin-bottom:12px">📖 Engine Cycle Reference</h2>
         <div style="width:60px;height:4px;background:linear-gradient(90deg,var(--accent),var(--good));margin:0 auto;border-radius:999px"></div>
       </div>
       <div style="padding:20px;background:rgba(106,227,255,.05);border:2px solid rgba(106,227,255,.2);border-radius:12px">
@@ -734,12 +734,11 @@
         </div>
       </div>
       <div style="padding:16px;background:rgba(255,255,255,.02);border-radius:10px">
-        <h3 style="margin-bottom:8px">🌡️ Heat Transfer in Engines</h3>
+        <h3 style="margin-bottom:8px">⚙️ Combustion & Ignition Basics</h3>
         <ul style="margin:8px 0;padding-left:20px;line-height:1.8">
-          <li><b>Conduction</b>: Metal-to-metal heat flow (combustion gas → cylinder wall → coolant)</li>
-          <li><b>Convection</b>: Fluid movement carries heat (coolant in block; air across radiator fins)</li>
-          <li><b>Radiation</b>: Minor but present (hot surfaces emit infrared)</li>
-          <li>Most radiator heat loss to air is via <b>forced convection</b> (fan/vehicle speed)</li>
+          <li>Gasoline stoichiometric AFR ≈ <b>14.7:1</b> (by mass)</li>
+          <li>Typical spark plug gap ≈ <b>0.7–0.9 mm</b> (varies by engine/ignition)</li>
+          <li>Firing order and valve timing are key to smooth operation</li>
         </ul>
       </div>
       <div style="padding:16px;background:rgba(255,255,255,.02);border-radius:10px">
@@ -1071,24 +1070,24 @@
       },
       t11() {
         const sel = document.querySelector('input[name="t11"]:checked');
-        const ok = sel && sel.value === 'Convection';
-        ok ? award('t11', $('#t11msg')) : wrong($('#t11msg'), '❌ Think fluid motion moving heat away from the radiator fins.');
+        const ok = sel && sel.value === '14.7:1';
+        ok ? award('t11', $('#t11msg')) : wrong($('#t11msg'), '❌ Hint: near fifteen parts air to one part fuel.');
       },
       t12() {
         const raw = ($('#t12').value || '').trim();
-        if (!raw) return wrong($('#t12msg'), '❌ Enter a range like 80-90 °C', $('#t12'));
+        if (!raw) return wrong($('#t12msg'), '❌ Enter a range like 0.7-0.9 mm', $('#t12'));
         const normalized = raw
           .replace(/\s+/g,'')
           .replace(/[–—]/g,'-')
           .replace(/to/i,'-');
-        const m = normalized.match(/^(\d{2,3})-(\d{2,3})$/);
-        if (!m) return wrong($('#t12msg'), '❌ Use a hyphenated range, e.g., 80-90', $('#t12'));
-        const a = parseInt(m[1],10), b = parseInt(m[2],10);
+        const m = normalized.match(/^(\d(?:\.\d)?)-(\d(?:\.\d)?)$/);
+        if (!m) return wrong($('#t12msg'), '❌ Use a hyphenated range, e.g., 0.7-0.9', $('#t12'));
+        const a = parseFloat(m[1]), b = parseFloat(m[2]);
         if (!(a < b)) return wrong($('#t12msg'), '❌ The first value should be lower than the second', $('#t12'));
-        // Accept ranges fully within 80–90°C inclusive
-        const inside = (x) => x >= 80 && x <= 90;
+        // Accept ranges fully within 0.6–1.1 mm inclusive
+        const inside = (x) => x >= 0.6 && x <= 1.1;
         const ok = inside(a) && inside(b);
-        ok ? award('t12', $('#t12msg')) : wrong($('#t12msg'), '❌ Typical thermostat range is around 80–90°C', $('#t12'));
+        ok ? award('t12', $('#t12msg')) : wrong($('#t12msg'), '❌ Typical plug gaps are roughly 0.7–0.9 mm (engine dependent).', $('#t12'));
       },
       t13() {
         const v = $('#t13').value.trim().toLowerCase().replace(/\s+/g, '');
@@ -1171,8 +1170,8 @@
       t8: '💡 Some cars pull from the front, others push from behind, the ambitious ones use all their feet...',
       t9: '💡 Air whispers of hunger, oil leaves its trace, timing\'s dance sets the pace...',
       t10: '💡 When space is squeezed from max to min, this ratio holds the secret within...',
-  t11: '💡 Fins don’t glow heat away—they hand it to moving air. Which mode moves heat with the flow?',
-  t12: '💡 Most road cars begin opening the thermostat roughly in the low-to-high 80s °C…',
+  t11: '💡 Chemically ideal burn: roughly fifteen parts air to one part fuel…',
+  t12: '💡 Most modern gasoline engines use around 0.7–0.9 mm; check the service manual for exact spec.',
       t13: '💡 In verses four, the engine\'s lore...',
       t14: '💡 Like dancers in time, cylinders chime...',
       t15: '💡 Name the parts from heart to shell, follow the path where numbers tell, each letter\'s start reveals the spell...'
@@ -1274,10 +1273,10 @@
 
     updateProgress();
 
-    // Show intro video on load (autoplay muted for compatibility)
+  // Show intro video on load (autoplay muted for compatibility)
     window.addEventListener('load', () => {
       // Delay slightly to ensure layout stable
-      setTimeout(() => openVideo({ autoplay: true, mute: false, title: 'Introduction — Engine Escape' }), 300);
+  setTimeout(() => openVideo({ autoplay: true, mute: false, title: 'Introduction — Engine Escape' }), 300);
     });
   </script>
 </body>
