@@ -3,13 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Engine Escape Challenge • Otto Cycle Mastery</title>
+  <title>Engine Escape</title>
   <style>
     :root{
-      --bg:#0f1220;--panel:#171a2b;--ink:#eaf0ff;--muted:#a7b0d8;--accent:#6ae3ff;--good:#3de387;--bad:#ff6a7a;--warn:#ffd166;
+      /* Fresh "workshop he</div>at" theme */
+      --bg:#0b0c10;         /* app background */
+      --panel:#14161b;      /* card/panel */
+      --ink:#f8fafc;        /* text */
+      --muted:#94a3b8;      /* secondary text */
+      --accent:#ff8a3d;     /* primary accent (amber) */
+      --good:#4ade80;       /* success */
+      --bad:#f43f5e;        /* error */
+      --warn:#f59e0b;       /* warning */
     }
     *{box-sizing:border-box}
-    body{margin:0;background:radial-gradient(1200px 800px at 10% -10%,#1a1f3d 0%,#0f1220 45%,#0b0d17 100%);color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;min-height:100vh}
+    body{
+      margin:0;
+      /* layered background: warm glow + subtle grid */
+      background:
+        radial-gradient(1200px 800px at 85% -10%, rgba(255,138,61,.25) 0%, rgba(255,138,61,0) 50%),
+        radial-gradient(1000px 700px at 10% 10%, rgba(255,138,61,.15) 0%, rgba(255,138,61,0) 60%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, transparent 1px 60px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, transparent 1px 60px),
+        linear-gradient(180deg,#0b0c10,#0b0c10);
+      color:var(--ink);
+      font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+      min-height:100vh
+    }
     h1,h2,h3{line-height:1.1;margin:0 0 .35rem}
     h1{font-size:clamp(24px,3vw,36px)}
     h2{font-size:clamp(18px,2.2vw,24px);color:#dce3ff}
@@ -18,12 +38,12 @@
     .cols{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
     
     .panel{
-      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(0,0,0,.08));
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:16px;
+      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.08));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
       padding:20px;
-      box-shadow:0 10px 40px rgba(0,0,0,.3);
-      transition:transform .3s ease, box-shadow .3s ease;
+      box-shadow:0 10px 30px rgba(0,0,0,.35);
+      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
     
     .panel:hover{transform:translateY(-2px);box-shadow:0 15px 50px rgba(0,0,0,.4)}
@@ -35,11 +55,11 @@
       opacity:0;transition:opacity .3s;
     }
     .task-card:hover::before{opacity:1}
-    .task-card.solved{border-color:var(--good);background:linear-gradient(180deg,rgba(61,227,135,.08),rgba(0,0,0,.08))}
+  .task-card.solved{border-color:var(--good);background:linear-gradient(180deg,rgba(74,222,128,.09),rgba(0,0,0,.06))}
     .task-card.solved::after{
       content:'✓';position:absolute;top:12px;left:12px;
       width:32px;height:32px;border-radius:50%;
-      background:var(--good);color:#000;
+  background:var(--good);color:#0b0c10;
       display:grid;place-items:center;font-weight:900;font-size:20px;
       animation:pop .5s cubic-bezier(.68,-0.55,.265,1.55);
     }
@@ -51,32 +71,33 @@
     
     .btn{
       cursor:pointer;border:none;padding:.75rem 1.25rem;border-radius:12px;
-      background:linear-gradient(135deg,#3d53ff,#2231ff);color:white;
-      font-weight:700;letter-spacing:.3px;font-size:15px;
-      transition:all .2s;box-shadow:0 4px 12px rgba(61,83,255,.3);
+      background:linear-gradient(135deg,#ffb653,#ff7a59);color:#111;
+      font-weight:800;letter-spacing:.3px;font-size:15px;
+      transition:all .2s;box-shadow:0 4px 12px rgba(255,138,61,.35);
+      text-shadow:0 1px 0 rgba(255,255,255,.35);
     }
-    .btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(61,83,255,.5)}
+    .btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,138,61,.5)}
     .btn:active:not(:disabled){transform:translateY(0)}
-    .btn.secondary{background:linear-gradient(135deg,#2d3558,#1a2042);box-shadow:0 4px 12px rgba(0,0,0,.3)}
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.2);box-shadow:none}
-    .btn.ghost:hover:not(:disabled){background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.3)}
+    .btn.secondary{background:linear-gradient(135deg,#252a33,#181c23);box-shadow:0 4px 12px rgba(0,0,0,.4);color:var(--ink);text-shadow:none}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.22);box-shadow:none;color:var(--ink);text-shadow:none}
+    .btn.ghost:hover:not(:disabled){background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.35)}
     .btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
     
     .badge{
       display:inline-flex;gap:.5ch;align-items:center;padding:.4rem .7rem;
-      border-radius:999px;background:#0b132e;
-      border:1px solid rgba(255,255,255,.15);font-size:13px;color:var(--muted);
-      box-shadow:0 2px 8px rgba(0,0,0,.2);
+      border-radius:999px;background:#171a20;
+      border:1px solid rgba(255,255,255,.12);font-size:13px;color:var(--muted);
+      box-shadow:0 2px 8px rgba(0,0,0,.25);
     }
     
     .hint{font-size:14px;color:var(--muted);animation:slideIn .3s ease}
     
     input,select{
-      background:#0d1330;color:var(--ink);
-      border:1px solid rgba(255,255,255,.2);border-radius:10px;
+      background:#13161c;color:var(--ink);
+      border:1px solid rgba(255,255,255,.18);border-radius:10px;
       padding:.7rem .8rem;font-size:15px;transition:all .2s;
     }
-    input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(106,227,255,.1)}
+    input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,138,61,.15)}
     input[type="number"]{width:140px}
     input.error{border-color:var(--bad);animation:shake .3s}
     input.input-ok{border-color:var(--good);background:rgba(61,227,135,.06);box-shadow:0 4px 14px rgba(61,227,135,.06)}
@@ -86,14 +107,14 @@
     .warn{color:var(--warn);font-weight:600}
     
     .progress{
-      height:12px;background:#0b1030;border-radius:999px;overflow:hidden;
-      border:1px solid rgba(255,255,255,.2);position:relative;
+      height:12px;background:#12141a;border-radius:999px;overflow:hidden;
+      border:1px solid rgba(255,255,255,.18);position:relative;
     }
     .progress>i{
       display:block;height:100%;
-      background:linear-gradient(90deg,#00e1ff,#6affc9,#3de387);
+      background:linear-gradient(90deg,#ffb653,#ff8a3d,#4ade80);
       width:0%;transition:width .5s cubic-bezier(.68,-0.55,.265,1.55);
-      box-shadow:0 0 10px rgba(106,227,255,.5);
+      box-shadow:0 0 10px rgba(255,138,61,.45);
     }
     
     .mono{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace}
@@ -101,26 +122,35 @@
     .token{
       position:absolute;right:14px;bottom:14px;
       display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .65rem;
-      border-radius:999px;border:2px dashed rgba(255,255,255,.35);
-      font-size:13px;background:rgba(106,227,255,.08);font-weight:600;
+      border-radius:999px;border:2px dashed rgba(255,255,255,.3);
+      font-size:13px;background:rgba(255,138,61,.12);font-weight:700;
       backdrop-filter:blur(8px);
     }
     
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     
     .car-diagram{
-      border:2px solid rgba(255,255,255,.25);border-radius:14px;padding:20px;
-      background:#0e1330;text-align:center;transition:all .2s;
+      border:2px solid rgba(255,255,255,.18);border-radius:14px;padding:20px;
+      background:#12151b;text-align:center;transition:all .2s;
     }
     .car-diagram:hover{transform:scale(1.02)}
     
     dialog{
       border:none;border-radius:18px;
-      background:linear-gradient(180deg,#1a2040,#0d1330);
+      background:linear-gradient(180deg,#171b23,#11151b);
       color:var(--ink);max-width:700px;padding:32px;
-      box-shadow:0 20px 60px rgba(0,0,0,.6);
+      box-shadow:0 20px 60px rgba(0,0,0,.7);
     }
-    dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px)}
+  dialog::backdrop{background:rgba(0,0,0,.75);backdrop-filter:blur(4px)}
+  .overflow-hidden{overflow:hidden}
+
+  /* Video overlay */
+  #videoOverlay{position:fixed;inset:0;display:none;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:3000}
+  #videoOverlay.open{display:grid;place-items:center}
+  .video-box{width:min(100vw,calc(90dvh * 16 / 9));height:min(90dvh,calc(100vw * 9 / 16));margin:auto}
+  .video-frame{width:100%;height:100%;border:0;border-radius:12px;background:#000}
+  #closeVideoBtn{position:absolute;top:16px;right:16px;z-index:2}
+    .dialog-actions{display:flex;justify-content:flex-end;margin-top:12px}
     
     .tiny{font-size:12px;color:var(--muted);line-height:1.5}
     
@@ -133,8 +163,8 @@
     }
     
     .header-badge{
-      background:linear-gradient(135deg,rgba(106,227,255,.15),rgba(61,227,135,.15));
-      border:2px solid rgba(106,227,255,.3);padding:.5rem 1rem;
+      background:linear-gradient(135deg,rgba(255,138,61,.18),rgba(74,222,128,.14));
+      border:2px solid rgba(255,138,61,.35);padding:.5rem 1rem;
       border-radius:12px;font-weight:600;
     }
     
@@ -147,9 +177,9 @@
       display:grid;place-items:center;z-index:2000;animation:slideIn .3s;
     }
     .lockout-box{
-      background:linear-gradient(180deg,#2d1a1a,#1a0d0d);
+      background:linear-gradient(180deg,#2a1416,#170c0d);
       border:2px solid var(--bad);border-radius:20px;padding:40px;
-      max-width:500px;text-align:center;box-shadow:0 20px 80px rgba(255,106,122,.3);
+      max-width:500px;text-align:center;box-shadow:0 20px 80px rgba(244,63,94,.35);
     }
     .lockout-timer{font-size:72px;font-weight:900;color:var(--bad);font-family:monospace;margin:20px 0}
     
@@ -190,8 +220,8 @@
     .t15-diagram{
       border-radius:10px;
       overflow:hidden;
-      border:2px solid rgba(106,227,255,.2);
-      background:rgba(0,0,0,.3);
+      border:2px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.28);
       max-width:500px;
     }
     .t15-diagram img{
@@ -251,10 +281,10 @@
     <header class="panel grid" style="gap:12px">
       <div class="row" style="justify-content:space-between;flex-wrap:wrap">
         <div>
-          <h1>🔧 Engine Escape Challenge</h1>
+          <h1>�❄️ Engine Escape</h1>
           <div class="badge" style="margin-top:8px">
-            <span style="font-size:16px">⚙️</span>
-            <span>Master the Otto 4-Stroke Cycle</span>
+            <span style="font-size:16px">🛠️</span>
+            <span>Cycles, Heat Transfer, and Diagnostics</span>
           </div>
         </div>
         <button class="btn ghost" id="openGuide">📖 Reference Guide</button>
@@ -489,20 +519,20 @@
 
       <!-- TASK 11 -->
       <article class="panel task-card" data-task="t11" data-token="8">
-        <h2>Task 11 — Thermal Efficiency</h2>
-        <p>Which cycle stroke converts chemical energy to mechanical work?</p>
+        <h2>Task 11 — Heat Transfer Basics</h2>
+        <p>In a vehicle radiator, which <b>mode of heat transfer</b> accounts for most heat loss from fins to the surrounding air?</p>
         <div class="grid" style="gap:8px">
           <label style="padding:10px;background:rgba(255,255,255,.02);border-radius:8px;cursor:pointer" class="radio-label">
-            <input type="radio" name="t11" value="Induction"/> Induction
+            <input type="radio" name="t11" value="Conduction"/> Conduction
           </label>
           <label style="padding:10px;background:rgba(255,255,255,.02);border-radius:8px;cursor:pointer" class="radio-label">
-            <input type="radio" name="t11" value="Compression"/> Compression
+            <input type="radio" name="t11" value="Convection"/> Convection
           </label>
           <label style="padding:10px;background:rgba(255,255,255,.02);border-radius:8px;cursor:pointer" class="radio-label">
-            <input type="radio" name="t11" value="Combustion"/> Combustion (Power stroke)
+            <input type="radio" name="t11" value="Radiation"/> Radiation
           </label>
           <label style="padding:10px;background:rgba(255,255,255,.02);border-radius:8px;cursor:pointer" class="radio-label">
-            <input type="radio" name="t11" value="Exhaust"/> Exhaust
+            <input type="radio" name="t11" value="Evaporation"/> Evaporation
           </label>
         </div>
         <div class="row" style="margin-top:12px">
@@ -515,16 +545,10 @@
 
       <!-- TASK 12 -->
       <article class="panel task-card" data-task="t12" data-token="3">
-        <h2>Task 12 — Valve Timing</h2>
-        <p>At what crankshaft angle does intake valve typically open? (BTDC/ATDC)</p>
+        <h2>Task 12 — Thermostat Range</h2>
+        <p>Enter a <b>typical thermostat opening temperature range</b> in °C (e.g., <span class="mono">80-90</span> or <span class="mono">82-88</span>).</p>
         <div class="row">
-          <select id="t12">
-            <option value="">— choose —</option>
-            <option>10° BTDC</option>
-            <option>0° TDC</option>
-            <option>10° ATDC</option>
-            <option>180° ATDC</option>
-          </select>
+          <input id="t12" class="mono" placeholder="e.g. 80-90" style="width:180px;text-align:center"/>
           <button class="btn" data-check="t12">Submit</button>
           <button class="btn ghost" data-hint="t12">💡 Hint</button>
         </div>
@@ -635,7 +659,7 @@
     </section>
 
     <!-- FINAL LOCK WITH RIDDLE -->
-    <section class="panel" style="background:linear-gradient(180deg,rgba(106,227,255,.08),rgba(0,0,0,.08))">
+    <section class="panel" style="background:linear-gradient(180deg,rgba(255,138,61,.1),rgba(0,0,0,.06))">
       <h2>🔐 Final Lock — Decode the OTP</h2>
       <p>You've collected 6 OTP digits. But first, solve this riddle to unlock the input:</p>
       <div style="padding:20px;background:rgba(255,255,255,.03);border-radius:12px;margin:16px 0;border:2px dashed rgba(106,227,255,.3)">
@@ -697,7 +721,7 @@
   <dialog id="guide">
     <div class="grid" style="gap:20px">
       <div style="text-align:center">
-        <h2 style="font-size:28px;margin-bottom:12px">📖 Otto Cycle Reference</h2>
+        <h2 style="font-size:28px;margin-bottom:12px">📖 Heat & Cycle Reference</h2>
         <div style="width:60px;height:4px;background:linear-gradient(90deg,var(--accent),var(--good));margin:0 auto;border-radius:999px"></div>
       </div>
       <div style="padding:20px;background:rgba(106,227,255,.05);border:2px solid rgba(106,227,255,.2);border-radius:12px">
@@ -710,11 +734,19 @@
         </div>
       </div>
       <div style="padding:16px;background:rgba(255,255,255,.02);border-radius:10px">
+        <h3 style="margin-bottom:8px">🌡️ Heat Transfer in Engines</h3>
+        <ul style="margin:8px 0;padding-left:20px;line-height:1.8">
+          <li><b>Conduction</b>: Metal-to-metal heat flow (combustion gas → cylinder wall → coolant)</li>
+          <li><b>Convection</b>: Fluid movement carries heat (coolant in block; air across radiator fins)</li>
+          <li><b>Radiation</b>: Minor but present (hot surfaces emit infrared)</li>
+          <li>Most radiator heat loss to air is via <b>forced convection</b> (fan/vehicle speed)</li>
+        </ul>
+      </div>
+      <div style="padding:16px;background:rgba(255,255,255,.02);border-radius:10px">
         <h3 style="margin-bottom:8px">🔑 Study Tips</h3>
         <ul style="margin:8px 0;padding-left:20px;line-height:1.8">
           <li>The cycle always follows the same order</li>
-          <li>Each stroke has a specific mechanical function</li>
-          <li>Pay attention to technical vs colloquial terms</li>
+          <li>Pair mechanics with thermals: strokes + heat paths</li>
           <li>Wrong answers add 10-second time penalties</li>
         </ul>
       </div>
@@ -736,6 +768,21 @@
     </div>
   </dialog>
 
+  <!-- VIDEO OVERLAY -->
+  <div id="videoOverlay">
+    <button class="btn ghost" id="closeVideoBtn" type="button">✖ Close</button>
+    <div class="video-box">
+      <iframe
+        id="videoFrame"
+        class="video-frame"
+        src=""
+        title="YouTube video player"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+
   <script>
     // ===== CONFIG =====
     const TEACHER_PASSWORD = "otto1876";
@@ -750,6 +797,7 @@
     let wrongAnswers = 0;
     let lockoutAttempts = 0;
     let timeOffset = 0;
+  let prevSoundEnabled = null;
     const solved = new Set();
     const otpDigits = new Map();
 
@@ -892,6 +940,52 @@
       }
     };
 
+    // ===== VIDEO CONTROL (Intro/Outro) =====
+    const YT_BASE = 'https://www.youtube.com/embed/zT_UWfxgtfc';
+    const openVideo = ({ autoplay = true, mute = true, start = 0 } = {}) => {
+      const overlay = $('#videoOverlay');
+      const frame = $('#videoFrame');
+      if (!overlay || !frame) return;
+      // Build URL params
+      const p = new URLSearchParams({
+        autoplay: autoplay ? '1' : '0',
+        mute: mute ? '1' : '0',
+        rel: '0',
+        modestbranding: '1',
+        playsinline: '1',
+        start: String(start)
+      });
+      // Pause app sounds while video plays
+      prevSoundEnabled = soundEnabled;
+      soundEnabled = false;
+      frame.src = `${YT_BASE}?${p.toString()}`;
+      overlay.classList.add('open');
+      document.body.classList.add('overflow-hidden');
+    };
+    const closeVideo = () => {
+      const overlay = $('#videoOverlay');
+      const frame = $('#videoFrame');
+      if (frame) frame.src = '';
+      overlay?.classList.remove('open');
+      document.body.classList.remove('overflow-hidden');
+      // Restore app sounds
+      if (prevSoundEnabled !== null) {
+        soundEnabled = prevSoundEnabled;
+        prevSoundEnabled = null;
+      }
+    };
+    $('#closeVideoBtn')?.addEventListener('click', closeVideo);
+    // Close when clicking backdrop
+    $('#videoOverlay')?.addEventListener('click', (e) => {
+      const box = document.querySelector('#videoOverlay .video-box');
+      if (!box) return;
+      if (!box.contains(e.target)) closeVideo();
+    });
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeVideo();
+    });
+
     // Levenshtein distance for fuzzy matching
     const levenshtein = (a, b) => {
       if (a === b) return 0;
@@ -977,12 +1071,24 @@
       },
       t11() {
         const sel = document.querySelector('input[name="t11"]:checked');
-        const ok = sel && sel.value === 'Combustion';
-        ok ? award('t11', $('#t11msg')) : wrong($('#t11msg'), '❌ Which stroke is the power stroke?');
+        const ok = sel && sel.value === 'Convection';
+        ok ? award('t11', $('#t11msg')) : wrong($('#t11msg'), '❌ Think fluid motion moving heat away from the radiator fins.');
       },
       t12() {
-        const ok = $('#t12').value === '10° BTDC';
-        ok ? award('t12', $('#t12msg')) : wrong($('#t12msg'), '❌ Valves open slightly before TDC');
+        const raw = ($('#t12').value || '').trim();
+        if (!raw) return wrong($('#t12msg'), '❌ Enter a range like 80-90 °C', $('#t12'));
+        const normalized = raw
+          .replace(/\s+/g,'')
+          .replace(/[–—]/g,'-')
+          .replace(/to/i,'-');
+        const m = normalized.match(/^(\d{2,3})-(\d{2,3})$/);
+        if (!m) return wrong($('#t12msg'), '❌ Use a hyphenated range, e.g., 80-90', $('#t12'));
+        const a = parseInt(m[1],10), b = parseInt(m[2],10);
+        if (!(a < b)) return wrong($('#t12msg'), '❌ The first value should be lower than the second', $('#t12'));
+        // Accept ranges fully within 80–90°C inclusive
+        const inside = (x) => x >= 80 && x <= 90;
+        const ok = inside(a) && inside(b);
+        ok ? award('t12', $('#t12msg')) : wrong($('#t12msg'), '❌ Typical thermostat range is around 80–90°C', $('#t12'));
       },
       t13() {
         const v = $('#t13').value.trim().toLowerCase().replace(/\s+/g, '');
@@ -1065,8 +1171,8 @@
       t8: '💡 Some cars pull from the front, others push from behind, the ambitious ones use all their feet...',
       t9: '💡 Air whispers of hunger, oil leaves its trace, timing\'s dance sets the pace...',
       t10: '💡 When space is squeezed from max to min, this ratio holds the secret within...',
-      t11: '💡 From heat to motion, in this stroke lies the potion...',
-      t12: '💡 Just before the crown is reached, this gate begins to teach...',
+  t11: '💡 Fins don’t glow heat away—they hand it to moving air. Which mode moves heat with the flow?',
+  t12: '💡 Most road cars begin opening the thermostat roughly in the low-to-high 80s °C…',
       t13: '💡 In verses four, the engine\'s lore...',
       t14: '💡 Like dancers in time, cylinders chime...',
       t15: '💡 Name the parts from heart to shell, follow the path where numbers tell, each letter\'s start reveals the spell...'
@@ -1110,6 +1216,8 @@
         playSound(523.25, 0.15);
         setTimeout(() => playSound(659.25, 0.15), 150);
         setTimeout(() => playSound(783.99, 0.3), 300);
+        // Show celebratory video after success (attempt autoplay with sound)
+        setTimeout(() => openVideo({ autoplay: true, mute: false, title: 'Mission Complete — Replay' }), 400);
       } else {
         lockoutAttempts++;
         addPenalty();
@@ -1165,6 +1273,12 @@
     });
 
     updateProgress();
+
+    // Show intro video on load (autoplay muted for compatibility)
+    window.addEventListener('load', () => {
+      // Delay slightly to ensure layout stable
+      setTimeout(() => openVideo({ autoplay: true, mute: false, title: 'Introduction — Engine Escape' }), 300);
+    });
   </script>
 </body>
 </html>
