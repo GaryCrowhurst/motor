@@ -426,8 +426,8 @@
 
       <!-- TASK 7 -->
       <article class="panel task-card" data-task="t7" data-token="2">
-        <h2>Task 7 — Colloquial Terminology</h2>
-        <p>The 4-stroke cycle is sometimes called "Suck, Squeeze, Bang, Blow". Enter the <b>initials</b>.</p>
+        <h2>Task 7 — Technical to Colloquial Translation</h2>
+        <p>Engineers have a humorous way of describing the Otto cycle phases. Match these technical terms to their workshop slang: "Induction → <i>Suck</i>, Compression → <i>Squeeze</i>, Power → <i>Bang</i>, Exhaust → <i>Blow</i>". Enter the <b>sequence initials</b> to reveal how mechanics remember this cycle.</p>
         <div class="row">
           <input id="t7" class="mono" placeholder="4 letters" maxlength="4" style="width:160px;font-size:18px;text-align:center;text-transform:uppercase"/>
           <button class="btn" data-check="t7">Submit</button>
@@ -509,7 +509,7 @@
         <h2>Task 10 — Compression Ratio</h2>
         <p>If cylinder volume at BDC is 500cc and TDC is 50cc, what is the compression ratio? (format: X:1)</p>
         <div class="row">
-          <input id="t10" placeholder="e.g. 10:1" style="width:160px"/>
+          <input id="t10" placeholder="e.g. 4:1" style="width:160px"/>
           <button class="btn" data-check="t10">Submit</button>
           <button class="btn ghost" data-hint="t10">💡 Hint</button>
         </div>
@@ -545,10 +545,23 @@
 
       <!-- TASK 12 -->
       <article class="panel task-card" data-task="t12" data-token="3">
-        <h2>Task 12 — Spark Plug Gap</h2>
-        <p>Enter a <b>typical spark plug gap range</b> in mm (e.g., <span class="mono">0.7-0.9</span> or <span class="mono">0.8-0.9</span>).</p>
+        <h2>Task 12 — Spark Plug Diagnostics</h2>
+        <p>During maintenance, you discover a misfiring cylinder. The service manual specifies the spark plug gap should be between <span class="mono">0.7-0.9</span> mm. Which precision tool would you use to measure this gap, and what's the correct gap range?</p>
+        <div style="padding:12px;background:rgba(255,255,255,.02);border-radius:8px;margin:12px 0">
+          <div class="grid" style="grid-template-columns:1fr;gap:8px">
+            <label style="display:block;padding:8px;cursor:pointer" class="radio-label">
+              <input type="radio" name="t12_tool" value="feeler"/> <b>Feeler Gauge</b> - Flat metal strips of precise thickness
+            </label>
+            <label style="display:block;padding:8px;cursor:pointer" class="radio-label">
+              <input type="radio" name="t12_tool" value="caliper"/> <b>Digital Caliper</b> - Electronic measuring device
+            </label>
+            <label style="display:block;padding:8px;cursor:pointer" class="radio-label">
+              <input type="radio" name="t12_tool" value="ruler"/> <b>Steel Ruler</b> - Precision metal ruler with mm markings
+            </label>
+          </div>
+        </div>
         <div class="row">
-          <input id="t12" class="mono" placeholder="e.g. 0.7-0.9" style="width:180px;text-align:center"/>
+          <input id="t12" class="mono" placeholder="gap range (e.g. 0.7-0.9)" style="width:180px;text-align:center"/>
           <button class="btn" data-check="t12">Submit</button>
           <button class="btn ghost" data-hint="t12">💡 Hint</button>
         </div>
@@ -606,21 +619,22 @@
         <div class="t15-container">
           <div class="t15-column">
             <div style="font-weight:700;margin-bottom:12px;color:var(--accent)">Left Column</div>
-            <label>2: <input id="t15_2"/></label>
-            <label>3: <input id="t15_3"/></label>
-            <label>4: <input id="t15_4"/></label>
-            <label>5: <input id="t15_5"/></label>
-            <label>6: <input id="t15_6"/></label>
-            <label>7: <input id="t15_7"/></label>
-            <label>8: <input id="t15_8"/></label>
-            <label>9: <input id="t15_9"/></label>
+            <label>2: <input id="t15_2" oninput="validateComponent(2, this)" placeholder="e.g. Camshaft"/><span id="t15_2_check" class="tiny"></span></label>
+            <label>3: <input id="t15_3" oninput="validateComponent(3, this)" placeholder="e.g. Lobe"/><span id="t15_3_check" class="tiny"></span></label>
+            <label>4: <input id="t15_4" oninput="validateComponent(4, this)" placeholder="e.g. Inlet Port"/><span id="t15_4_check" class="tiny"></span></label>
+            <label>5: <input id="t15_5" oninput="validateComponent(5, this)" placeholder="e.g. Inlet Valve"/><span id="t15_5_check" class="tiny"></span></label>
+            <label>6: <input id="t15_6" oninput="validateComponent(6, this)" placeholder="e.g. Cylinder"/><span id="t15_6_check" class="tiny"></span></label>
+            <label>7: <input id="t15_7" oninput="validateComponent(7, this)" placeholder="e.g. Block"/><span id="t15_7_check" class="tiny"></span></label>
+            <label>8: <input id="t15_8" oninput="validateComponent(8, this)" placeholder="e.g. Connecting Rod"/><span id="t15_8_check" class="tiny"></span></label>
+            <label>9: <input id="t15_9" oninput="validateComponent(9, this)" placeholder="e.g. Crankshaft"/><span id="t15_9_check" class="tiny"></span></label>
           </div>
           
           <div class="t15-center">
             <div style="margin-bottom:12px;text-align:center">
               <div style="font-weight:700;margin-bottom:6px;color:var(--accent)">Top Center</div>
               <label style="display:flex;flex-direction:column;gap:4px;align-items:center">
-                1: <input id="t15_1" style="width:180px;font-size:14px"/>
+                1: <input id="t15_1" oninput="validateComponent(1, this)" placeholder="e.g. Spark Plug" style="width:180px;font-size:14px"/>
+                <span id="t15_1_check" class="tiny"></span>
               </label>
             </div>
             <div class="t15-diagram">
@@ -633,12 +647,12 @@
 
           <div class="t15-column">
             <div style="font-weight:700;margin-bottom:12px;color:var(--accent)">Right Column</div>
-            <label>10: <input id="t15_10"/></label>
-            <label>11: <input id="t15_11"/></label>
-            <label>12: <input id="t15_12"/></label>
-            <label>13: <input id="t15_13"/></label>
-            <label>14: <input id="t15_14"/></label>
-            <label>15: <input id="t15_15"/></label>
+            <label>10: <input id="t15_10" oninput="validateComponent(10, this)" placeholder="e.g. Valve Spring"/><span id="t15_10_check" class="tiny"></span></label>
+            <label>11: <input id="t15_11" oninput="validateComponent(11, this)" placeholder="e.g. Exhaust Valve"/><span id="t15_11_check" class="tiny"></span></label>
+            <label>12: <input id="t15_12" oninput="validateComponent(12, this)" placeholder="e.g. Cylinder Head"/><span id="t15_12_check" class="tiny"></span></label>
+            <label>13: <input id="t15_13" oninput="validateComponent(13, this)" placeholder="e.g. Water Jacket"/><span id="t15_13_check" class="tiny"></span></label>
+            <label>14: <input id="t15_14" oninput="validateComponent(14, this)" placeholder="e.g. Piston"/><span id="t15_14_check" class="tiny"></span></label>
+            <label>15: <input id="t15_15" oninput="validateComponent(15, this)" placeholder="e.g. Crankcase"/><span id="t15_15_check" class="tiny"></span></label>
           </div>
         </div>
 
@@ -1007,7 +1021,83 @@
       return matrix[al][bl];
     };
 
-    // Canonical labels for Task 15
+    // Component validation for Task 15
+    const engineComponents = {
+      1: { name: 'SPARK PLUG', hint: 'Ignites the air-fuel mixture' },
+      2: { name: 'CAMSHAFT', hint: 'Controls valve timing' },
+      3: { name: 'LOBE', hint: 'Part of camshaft that lifts valves' },
+      4: { name: 'INLET PORT', hint: 'Passage for incoming mixture' },
+      5: { name: 'INLET VALVE', hint: 'Controls mixture entry' },
+      6: { name: 'CYLINDER', hint: 'Where compression occurs' },
+      7: { name: 'BLOCK', hint: 'Main structure housing cylinders' },
+      8: { name: 'CONNECTING ROD', hint: 'Links piston to crankshaft' },
+      9: { name: 'CRANKSHAFT', hint: 'Converts reciprocating to rotary motion' },
+      10: { name: 'VALVE SPRING', hint: 'Returns valve to closed position' },
+      11: { name: 'EXHAUST VALVE', hint: 'Controls gas exit' },
+      12: { name: 'CYLINDER HEAD', hint: 'Top section containing valves' },
+      13: { name: 'WATER JACKET', hint: 'Cooling passage around cylinder' },
+      14: { name: 'PISTON', hint: 'Moves up and down in cylinder' },
+      15: { name: 'CRANKCASE', hint: 'Houses the crankshaft' }
+    };
+
+    function validateComponent(num, input) {
+      const component = engineComponents[num];
+      const userInput = input.value.trim().toUpperCase();
+      const checkSpan = $(`#t15_${num}_check`);
+      
+      if (!userInput) {
+        checkSpan.innerHTML = `<span style="color:var(--muted)">💭 ${component.hint}</span>`;
+        input.classList.remove('input-ok', 'error');
+        return;
+      }
+
+      if (userInput === component.name) {
+        checkSpan.innerHTML = '<span style="color:var(--good)">✓ Correct!</span>';
+        input.classList.add('input-ok');
+        input.classList.remove('error');
+        playSound(659.25, 0.1); // Success sound
+        
+        // Update the decoded message automatically
+        updateDecodedMessage();
+      } else {
+        // Check if it's close using Levenshtein distance
+        const distance = levenshtein(userInput, component.name);
+        const maxDistance = Math.floor(component.name.length * 0.3); // Allow 30% difference
+        
+        if (distance <= maxDistance) {
+          checkSpan.innerHTML = '<span style="color:var(--warn)">↻ Close! Check spelling</span>';
+        } else {
+          checkSpan.innerHTML = '<span style="color:var(--bad)">✗ Try again</span>';
+        }
+        input.classList.add('error');
+        input.classList.remove('input-ok');
+      }
+    }
+
+    function updateDecodedMessage() {
+      const sequence = [7,1,13,4,9,2,15,8,3,11,5,14,6,10,12];
+      let message = '';
+      let allCorrect = true;
+      
+      for (const num of sequence) {
+        const input = $(`#t15_${num}`);
+        const userInput = input.value.trim().toUpperCase();
+        const expected = engineComponents[num].name;
+        
+        if (userInput === expected) {
+          message += userInput[0];
+        } else {
+          allCorrect = false;
+          break;
+        }
+      }
+      
+      if (allCorrect) {
+        $('#t15code').value = message;
+      }
+    }
+
+    // Original canonical labels for compatibility
     const canonicalT15 = [
       'camshaft', 'valve', 'intake', 'valve', 'cylinder', 'block', 'connecting', 'crankshaft', 'valve', 'valve', 'combustion', 'water', 'piston', 'crankcase'
     ];
@@ -1074,6 +1164,14 @@
         ok ? award('t11', $('#t11msg')) : wrong($('#t11msg'), '❌ Hint: near fifteen parts air to one part fuel.');
       },
       t12() {
+        const toolSelected = document.querySelector('input[name="t12_tool"]:checked');
+        if (!toolSelected) {
+          return wrong($('#t12msg'), '❌ Please select the appropriate measurement tool first');
+        }
+        if (toolSelected.value !== 'feeler') {
+          return wrong($('#t12msg'), '❌ That tool wouldn\'t provide accurate spark plug gap measurements');
+        }
+
         const raw = ($('#t12').value || '').trim();
         if (!raw) return wrong($('#t12msg'), '❌ Enter a range like 0.7-0.9 mm', $('#t12'));
         const normalized = raw
@@ -1087,7 +1185,13 @@
         // Accept ranges fully within 0.6–1.1 mm inclusive
         const inside = (x) => x >= 0.6 && x <= 1.1;
         const ok = inside(a) && inside(b);
-        ok ? award('t12', $('#t12msg')) : wrong($('#t12msg'), '❌ Typical plug gaps are roughly 0.7–0.9 mm (engine dependent).', $('#t12'));
+        
+        if (ok) {
+          $('#t12msg').innerHTML = '<span class="ok">✓ Correct! A feeler gauge is the proper tool for checking spark plug gaps, and ' + raw + ' mm is within spec.</span>';
+          award('t12', null);
+        } else {
+          wrong($('#t12msg'), '❌ The specified gap range should be between 0.7-0.9 mm for most engines.', $('#t12'));
+        }
       },
       t13() {
         const v = $('#t13').value.trim().toLowerCase().replace(/\s+/g, '');
@@ -1160,7 +1264,7 @@
 
     // Hints
     const hints = {
-      t1: '💡 First comes the breath of life, then muscles flex, followed by explosive power, ending with a cleansing sigh...',
+      t1: '💡 Compression 🔩, Induction 💨, Exhaust 🌫️, Combustion 💥',
       t2: '💡 What moves up and down becomes round and round, gates guide the flow, while sparks ignite the show...',
       t3: '💡 The words you seek share a common end, in the cycle\'s order your path will bend...',
       t4: '💡 A century after freedom\'s bell, this year holds secrets to tell...',
